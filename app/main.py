@@ -23,7 +23,7 @@ pool = oracledb.create_pool(
     increment=1
 )
 
-@app.get("/employee/{emp_id}")
+@app.get("/employee")
 def get_employee(emp_id: int):
     with pool.acquire() as conn:
         cursor = conn.cursor()

@@ -2,7 +2,7 @@ pip install -r requirements.txt
 
 uvicorn app.main:app --reload
 
-http://127.0.0.1:8000/employee/100
+http://127.0.0.1:8000/employee?emp_id=100
 
 
 #If using Instant Client
@@ -23,5 +23,15 @@ export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_13:$LD_LIBRARY_PATH
 echo 'export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_13:$LD_LIBRARY_PATH' >> ~/.bashrc
 
 python -c "import cx_Oracle; print(cx_Oracle.clientversion())"
+
+
+
+
+# Docker
+
+docker build -t fastapi-oracle .
+
+
+docker run -d -p 8000:8000 --env-file .env fastapi-oracle
 
 

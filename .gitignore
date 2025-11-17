@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+*__pycache__/
 *.py[cod]
 *$py.class
 
@@ -25,3 +26,7 @@ build/
 
 # Uvicorn / FastAPI reload artifacts
 *.db
+test.py
+.env
+
+.env

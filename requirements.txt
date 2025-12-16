@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 oracledb
 python-dotenv
+mysql-connector-python
+pydantic[email]

@@ -6,7 +6,7 @@ on:
     types: [ closed ]
 
 jobs:
-  docker-helm:
+  docker:
     if: github.event.pull_request.merged == true  # Only run if PR merged
     runs-on: ubuntu-latest
 
@@ -68,37 +68,43 @@ jobs:
             balokolos/fastapi-oracle:latest
             balokolos/fastapi-oracle:${{ env.VERSION }}
 
-      # # ----------------------------
-      # # 8️⃣ Update Helm Chart version
-      # # ----------------------------
-      # - name: Update Helm Chart version
-      #   run: |
-      #     sed -i "s/^version:.*/version: ${{ env.VERSION }}/" helm_app_folder/Chart.yaml
-      #     sed -i "s/^appVersion:.*/appVersion: ${{ env.VERSION }}/" helm_app_folder/Chart.yaml
+  # helm:
+  #   needs: [ docker ]   # Runs only after checks succeed
+  #   runs-on: ubuntu-latest
+  #     # ----------------------------
+  #     # 8️⃣ Update Helm Chart version
+  #     # ----------------------------
+  #   steps: 
+  #     - name: Checkout Helm Chart repo
+  #       uses: actions/checkout@v4
+  #     - name: Update Helm Chart version
+  #       run: |
+  #         sed -i "s/^version:.*/version: ${{ env.VERSION }}/" helm_app_folder/Chart.yaml
+  #         sed -i "s/^appVersion:.*/appVersion: ${{ env.VERSION }}/" helm_app_folder/Chart.yaml
 
-      # # ----------------------------
-      # # 9️⃣ Push Helm chart to another repo
-      # # ----------------------------
-      # - name: Push Helm chart to target repo
-      #   env:
-      #     TARGET_REPO: ${{ secrets.HELM_REPO }}  # e.g., HTTPS with PAT or SSH
-      #     TARGET_BRANCH: main
-      #   run: |
-      #     git config --global user.name "github-actions"
-      #     git config --global user.email "actions@github.com"
+  #     # ----------------------------
+  #     # 9️⃣ Push Helm chart to another repo
+  #     # ----------------------------
+  #     - name: Push Helm chart to target repo
+  #       env:
+  #         TARGET_REPO: ${{ secrets.HELM_REPO }}  # e.g., HTTPS with PAT or SSH
+  #         TARGET_BRANCH: main
+  #       run: |
+  #         git config --global user.name "github-actions"
+  #         git config --global user.email "actions@github.com"
 
-      #     # Clone target repo
-      #     git clone $TARGET_REPO temp-helm
-      #     cd temp-helm
+  #         # Clone target repo
+  #         git clone $TARGET_REPO temp-helm
+  #         cd temp-helm
 
-      #     # Copy updated helm chart
-      #     cp -r ../helm_app_folder/* ./  # adjust if needed
+  #         # Copy updated helm chart
+  #         cp -r ../helm_app_folder/* ./  # adjust if needed
 
-      #     # Commit & push
-      #     git add .
-      #     git commit -m "Update Helm chart version ${{ env.VERSION }}" || echo "No changes to commit"
-      #     git push origin $TARGET_BRANCH
+  #         # Commit & push
+  #         git add .
+  #         git commit -m "Update Helm chart version ${{ env.VERSION }}" || echo "No changes to commit"
+  #         git push origin $TARGET_BRANCH
 
-      #     # Tag the Helm chart
-      #     git tag v${{ env.VERSION }}
-      #     git push origin v${{ env.VERSION }}
+  #         # Tag the Helm chart
+  #         git tag v${{ env.VERSION }}
+  #         git push origin v${{ env.VERSION }}
